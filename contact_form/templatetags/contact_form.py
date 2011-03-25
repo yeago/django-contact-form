@@ -1,6 +1,6 @@
 from django.template import Library, Node
-from misc.contact_form.views import contact_form as contact_form_view 
-from misc.contact_form.forms import ContactForm
+from contact_form.views import contact_form as contact_form_view 
+from contact_form.forms import ContactForm
 
 register = Library()
 

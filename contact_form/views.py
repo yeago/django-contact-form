@@ -9,7 +9,7 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.contrib.auth.views import redirect_to_login
 
-from misc.contact_form.forms import AkismetContactForm as ContactForm
+from contact_form.forms import AkismetContactForm as ContactForm
 
 
 def contact_form(request, form_class=ContactForm,
