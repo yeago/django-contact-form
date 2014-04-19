@@ -6,10 +6,8 @@ a web interface, and a subclass demonstrating useful functionality.
 
 from django import forms
 from django.conf import settings
-from django.core.mail import send_mail
 from django.template import loader, RequestContext
 from django.contrib.sites.models import Site
-
 
 # I put this on all required fields, because it's easier to pick up
 # on them with CSS or JavaScript if they have a class of "required"
@@ -194,6 +192,7 @@ class ContactForm(forms.Form):
         for message_part in ('from_email', 'message', 'recipient_list', 'subject'):
             attr = getattr(self, message_part)
             message_dict[message_part] = callable(attr) and attr() or attr
+
         return message_dict
     
     def save(self, fail_silently=False):
@@ -201,6 +200,31 @@ class ContactForm(forms.Form):
         Builds and sends the email message.
         
         """
+
+        def send_mail(subject, message, from_email, recipient_list,
+                      fail_silently=False, auth_user=None, auth_password=None,
+                      connection=None, headers=None):
+            from django.core.mail import get_connection
+            from django.core.mail.message import EmailMessage
+            """
+            Easy wrapper for sending a single message to a recipient list. All members
+            of the recipient list will see the other recipients in the 'To' field.
+
+            If auth_user is None, the EMAIL_HOST_USER setting is used.
+            If auth_password is None, the EMAIL_HOST_PASSWORD setting is used.
+
+            Note: The API for this method is frozen. New code wanting to extend the
+            functionality should use the EmailMessage class directly.
+            """
+            connection = connection or get_connection(username=auth_user,
+                                            password=auth_password,
+                                            fail_silently=fail_silently)
+            if from_email and 'yahoo' in from_email:
+                headers = {'Reply-To': '%s' % from_email }
+            from_email = settings.SERVER_EMAIL
+            return EmailMessage(subject, message, from_email, recipient_list,
+                                connection=connection, headers=headers).send()
+
         send_mail(fail_silently=fail_silently, **self.get_message_dict())
 
 
