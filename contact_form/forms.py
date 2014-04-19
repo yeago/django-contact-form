@@ -221,7 +221,7 @@ class ContactForm(forms.Form):
                                             fail_silently=fail_silently)
             if from_email and 'yahoo' in from_email:
                 headers = {'Reply-To': '%s' % from_email }
-            from_email = settings.SERVER_EMAIL
+                from_email = settings.SERVER_EMAIL
             return EmailMessage(subject, message, from_email, recipient_list,
                                 connection=connection, headers=headers).send()
 
