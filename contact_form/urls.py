@@ -10,8 +10,10 @@ hierarchy (for best results with the defaults, include it under
 
 """
 
-
-from django.conf.urls.defaults import patterns, url
+try:
+    from django.conf.urls.defaults import patterns, url
+except ImportError:
+    from django.conf.urls import patterns, url
 from django.views.generic import TemplateView
 from contact_form.views import contact_form
 
