@@ -5,8 +5,7 @@ View which can render and send email from a contact form.
 
 
 from django.http import HttpResponseRedirect
-from django.shortcuts import render_to_response
-from django.template import RequestContext
+from django.shortcuts import render
 from django.contrib.auth.views import redirect_to_login
 
 from contact_form.forms import AkismetContactForm as ContactForm
@@ -61,6 +60,4 @@ def contact_form(request, form_class=ContactForm,
             return HttpResponseRedirect(success_url)
     else:
         form = form_class(request=request)
-    return render_to_response(template_name,
-                              { 'form': form },
-                              context_instance=RequestContext(request))
+    return render(request, template_name, {'form': form})
