@@ -6,7 +6,7 @@ a web interface, and a subclass demonstrating useful functionality.
 
 from django import forms
 from django.conf import settings
-from django.template import loader, RequestContext
+from django.template import loader
 from django.contrib.sites.models import Site
 
 # I put this on all required fields, because it's easier to pick up
@@ -180,10 +180,8 @@ class ContactForm(forms.Form):
         if not self.is_valid():
             raise ValueError("Cannot generate Context from invalid contact form")
         if self._context is None:
-            self._context = RequestContext(self.request,
-                                           dict(self.cleaned_data,
-                                                site=Site.objects.get_current()))
-        return self._context
+            self._context = dict(self.cleaned_data)
+	return self._context
     
     def get_message_dict(self):
         if not self.is_valid():
@@ -192,7 +190,6 @@ class ContactForm(forms.Form):
         for message_part in ('from_email', 'message', 'recipient_list', 'subject'):
             attr = getattr(self, message_part)
             message_dict[message_part] = callable(attr) and attr() or attr
-
         return message_dict
     
     def save(self, fail_silently=False):
