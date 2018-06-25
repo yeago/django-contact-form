@@ -60,4 +60,4 @@ def contact_form(request, form_class=ContactForm,
             return HttpResponseRedirect(success_url)
     else:
         form = form_class(request=request)
-    return render(request, template_name, { 'form': form })
+    return render(request, template_name, {'form': form})
