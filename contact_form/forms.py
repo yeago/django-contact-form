@@ -216,10 +216,9 @@ class ContactForm(forms.Form):
             connection = connection or get_connection(username=auth_user,
                                             password=auth_password,
                                             fail_silently=fail_silently)
-            if from_email and 'yahoo' in from_email:
+            if from_email:
                 headers = {'Reply-To': '%s' % from_email }
-                from_email = settings.SERVER_EMAIL
-            return EmailMessage(subject, message, from_email, recipient_list,
+            return EmailMessage(subject, message, settings.SERVER_EMAIL, recipient_list,
                                 connection=connection, headers=headers).send()
 
         send_mail(fail_silently=fail_silently, **self.get_message_dict())
