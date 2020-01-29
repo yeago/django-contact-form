@@ -173,15 +173,15 @@ class ContactForm(forms.Form):
         subject = loader.render_to_string(self.subject_template_name,
                                           self.get_context())
 
-    subject = '%s%s' % (getattr(settings,'EMAIL_SUBJECT_PREFIX',''),''.join(subject.splitlines()))
-    return subject
+        subject = '%s%s' % (getattr(settings,'EMAIL_SUBJECT_PREFIX',''),''.join(subject.splitlines()))
+        return subject
 
     def get_context(self):
         if not self.is_valid():
             raise ValueError("Cannot generate Context from invalid contact form")
         if self._context is None:
             self._context = dict(self.cleaned_data)
-    return self._context
+        return self._context
 
     def get_message_dict(self):
         if not self.is_valid():
